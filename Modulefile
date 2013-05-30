@@ -8,6 +8,5 @@ source       'git://github.com/alphagov/puppet-backdrop.git'
 summary      'Puppet module for the Backdrop App'
 description  'Provides a defined type for setting up backdrop'
 
-# This module depends on:
-# 'git://github.com/stankevich/puppet-python.git'
-# 'git://github.com/bison/puppet-upstart.git'
+dependency 'python', repository: 'git://github.com/stankevich/puppet-python.git'
+dependency 'upstart', repository: 'git://github.com/bison/puppet-upstart.git'
