@@ -34,15 +34,15 @@ define backdrop::app (
 		content => template('backdrop/gunicorn.erb')
 	}
 	upstart::job { "$title":
-		description => "Backdrop API for $title",
-		respawn     => true,
+		description   => "Backdrop API for $title",
+		respawn       => true,
 		respawn_limit => '5 10',
-		user => 'deploy',
-		group => 'deploy',
-		chdir => "$app_path",
-		environment => {
+		user          => 'deploy',
+		group         => 'deploy',
+		chdir         => "$app_path",
+		environment   => {
 			"GOVUK_ENV" => "production",
 		},
-		exec => "$virtualenv_path/bin/gunicorn -c $config_path/gunicorn $app_module"
+		exec          => "$virtualenv_path/bin/gunicorn -c $config_path/gunicorn $app_module"
 	}	
 }
