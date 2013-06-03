@@ -14,6 +14,7 @@ It does not: (and therefore must be done manually for the moment)
 - Copy the application code into `/opt/{app name}`
 - Copy correct configuration files into place `/opt/{app name}/backdrop/{module name}/config/{environment}.py`
 - Install `requirements.txt` into virtualenv
+- Update `/etc/hosts` with read.backdrop and write.backdrop hosts names
 
 The manual steps can be made a lot simpler if the backdrop app is packable and it's configuration is managed outside of the app.
 
