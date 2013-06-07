@@ -8,6 +8,7 @@ source       'git://github.com/alphagov/puppet-backdrop.git'
 summary      'Puppet module for the Backdrop App'
 description  'Provides a defined type for setting up backdrop'
 
-dependency 'alphagov-nginx', repository: 'git://github.com/alphagov/puppet-nginx.git'
-dependency 'stankevich-python', repository: 'git://github.com/stankevich/puppet-python.git'
-dependency 'bison-upstart', repository: 'git://github.com/bison/puppet-upstart.git'
+# We should handle these...
+#dependency 'alphagov-nginx', repository: 'git://github.com/alphagov/puppet-nginx.git'
+#dependency 'stankevich-python', repository: 'git://github.com/stankevich/puppet-python.git'
+#dependency 'bison-upstart', repository: 'git://github.com/bison/puppet-upstart.git'
