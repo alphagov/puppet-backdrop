@@ -2,7 +2,6 @@ define backdrop::app (
     $port        = undef,
     $workers     = 4,
     $app_module  = undef,
-    $domain_name = undef,
     $user        = undef,
     $group       = undef,
 ) {
@@ -21,7 +20,7 @@ define backdrop::app (
     }
     nginx::vhost::proxy { "${title}-vhost":
         port          => 80,
-        servername    => join(["${title}", $domain_name],'.'),
+        servername    => $title,
         ssl           => false,
         upstream_port => $port,
 
