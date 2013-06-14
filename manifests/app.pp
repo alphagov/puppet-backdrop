@@ -9,14 +9,15 @@ define backdrop::app (
     include upstart
 
     $app_path = "/opt/${title}"
-    $virtualenv_path = "${app_path}/venv"
+    $virtualenv_path = "${app_path}/shared/venv"
     $log_path = "/var/log/${title}"
     $config_path = "/etc/gds/${title}"
 
-    file { ["$app_path", "$log_path", "$config_path"]:
-        ensure => directory,
-        owner  => $user,
-        group  => $group,
+    file { ["$log_path", "$config_path", "$app_path/releases", "$app_path/shared", "$app_path/shared/log"]:
+        ensure  => directory,
+        owner   => $user,
+        group   => $group,
+        recurse => true,
     }
     nginx::vhost::proxy { "${title}-vhost":
         port          => 80,
@@ -31,7 +32,7 @@ define backdrop::app (
         systempkgs => false,
         owner      => $user,
         group      => $group,
-        require    => File[$app_path],
+        require    => File["$app_path/shared"],
     }
     file { "$config_path/gunicorn":
         ensure  => present,
@@ -39,16 +40,25 @@ define backdrop::app (
         group   => $group,
         content => template('backdrop/gunicorn.erb')
     }
+    file { "${app_path}/run-procfile.sh":
+        ensure  => present,
+        owner   => $user,
+        group   => $group,
+        mode    => 'a+x',
+        source  => 'puppet:///modules/backdrop/run-procfile.sh'
+    }
     upstart::job { "$title":
         description   => "Backdrop API for $title",
         respawn       => true,
         respawn_limit => '5 10',
         user          => $user,
         group         => $group,
-        chdir         => $app_path,
+        chdir         => "${app_path}/current",
         environment   => {
-            "GOVUK_ENV" => "production",
+            "GOVUK_ENV"  => "production",
+            "APP_NAME"   => $title,
+            "APP_MODULE" => $app_module,
         },
-        exec          => "$virtualenv_path/bin/gunicorn -c $config_path/gunicorn $app_module"
+        exec          => "${app_path}/run-procfile.sh"
     }
 }
