@@ -40,16 +40,25 @@ define backdrop::app (
         group   => $group,
         content => template('backdrop/gunicorn.erb')
     }
+    file { "${app_path}/run-procfile.sh":
+        ensure  => present,
+        owner   => $user,
+        group   => $group,
+        mode    => 'a+x',
+        source  => 'puppet:///modules/backdrop/run-procfile.sh'
+    }
     upstart::job { "$title":
         description   => "Backdrop API for $title",
         respawn       => true,
         respawn_limit => '5 10',
         user          => $user,
         group         => $group,
-        chdir         => $app_path,
+        chdir         => "${app_path}/current",
         environment   => {
-            "GOVUK_ENV" => "production",
+            "GOVUK_ENV"  => "production",
+            "APP_NAME"   => $title,
+            "APP_MODULE" => $app_module,
         },
-        exec          => "$virtualenv_path/bin/gunicorn -c $config_path/gunicorn $app_module"
+        exec          => "${app_path}/run-procfile.sh"
     }
 }
