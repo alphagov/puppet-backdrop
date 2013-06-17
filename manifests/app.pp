@@ -13,7 +13,7 @@ define backdrop::app (
     $log_path = "/var/log/${title}"
     $config_path = "/etc/gds/${title}"
 
-    file { ["$log_path", "$config_path", "$app_path/releases", "$app_path/shared", "$app_path/shared/log"]:
+    file { ["$log_path", "$config_path", "$app_path", "$app_path/releases", "$app_path/shared", "$app_path/shared/log"]:
         ensure  => directory,
         owner   => $user,
         group   => $group,
